@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"io"
 	"net/http"
 	"strings"
@@ -21,7 +22,7 @@ func NewApi(storage Storage, apiKeys []string) *Api {
 
 func (a *Api) RegisterEndpoints(e *echo.Echo) {
 	e.GET("/health", a.Health)
-	e.POST("/store/:entity", a.Store, authenticator(a.apiKeys))
+	e.POST("/store/:entity", a.Store, middleware.Logger(), authenticator(a.apiKeys))
 }
 
 func (a *Api) Health(c echo.Context) error {
